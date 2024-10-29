@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>出席確認アプリ</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 10px;
+            box-sizing: border-box;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-color: #F2F2F7;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 24px;
+            color: #000000;
+        }
+        #attendanceList {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 10px;
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        .attendee {
+            background-color: #FFFFFF;
+            border: 1px solid #E5E5EA;
+            border-radius: 10px;
+            padding: 15px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-size: 16px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .attendee:active {
+            background-color: #E5E5EA;
+        }
+        .attendee.present {
+            background-color: #34C759;
+            color: #FFFFFF;
+            text-decoration: line-through;
+        }
+        #summary {
+            margin-top: 20px;
+            font-weight: bold;
+            text-align: center;
+            font-size: 18px;
+            color: #000000;
+        }
+    </style>
+</head>
+<body>
+    <h1>出席確認アプリ</h1>
+    <ul id="attendanceList"></ul>
+    <div id="summary"></div>
+
+    <script>
+        const attendees = [
+            "柴田　利男", "上北　朋子", "浦田　洋", "大久保　千惠", "坂本　敏郎",
+            "田中　芳幸", "前田　洋光", "松下　幸治", "宮井　研治", "山口　裕幸",
+            "岸　太一", "ｼﾞｪｲﾑｽ　朋子", "濱田　智崇", "藤原　勇", "石山　裕菜",
+            "浦山　郁", "雲財　啓", "小野　由莉花", "木村　年晶", "杉山　智風",
+            "竹田　駿介", "南波　英和", "嶺　哲也"
+        ];
+
+        const attendanceList = document.getElementById('attendanceList');
+        const summary = document.getElementById('summary');
+
+        attendees.forEach(attendee => {
+            const li = document.createElement('li');
+            li.className = 'attendee';
+            li.textContent = attendee;
+            li.addEventListener('click', () => {
+                li.classList.toggle('present');
+                updateAttendance();
+            });
+            attendanceList.appendChild(li);
+        });
+
+        function updateAttendance() {
+            const total = attendees.length;
+            const present = document.querySelectorAll('.attendee.present').length;
+            const absent = total - present;
+
+            summary.textContent = `出席: ${present}名 / 欠席: ${absent}名`;
+        }
+
+        updateAttendance();
+    </script>
+</body>
+</html>
